@@ -15,8 +15,8 @@ public class MainController {
     private PhotoRepo photoRepo;
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request){
-//        System.out.println("User with IP:"+request.getRemoteAddr()+" connected to server. session: "+request.getSession().getId()+"\n"+
-//        "Page:"+request.getRequestURI());
+        System.out.println("User with IP:"+request.getRemoteAddr()+" connected to server. session: "+request.getSession().getId()+"\n"+
+        "Page:"+request.getRequestURI());
         Iterable<Topic> photos = photoRepo.findAll();
         model.addAttribute("photos",photos);
         return "home";
