@@ -2,6 +2,7 @@ package com.example.myspringapplication.models;
 import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 
 @Entity
@@ -15,6 +16,10 @@ public class Topic {
     private int views;
     @OneToOne
     private Users User;
+
+    public Topic() {
+
+    }
 
     public String getArticle() {
         return article;
@@ -54,5 +59,13 @@ public class Topic {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Topic(String description, String article, Users user) {
+        this.id = 0L;
+        this.description = description;
+        this.article = article;
+        this.views = 0;
+        User = user;
     }
 }
