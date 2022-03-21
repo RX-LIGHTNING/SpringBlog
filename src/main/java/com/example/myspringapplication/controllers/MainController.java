@@ -16,8 +16,6 @@ public class MainController {
     private UserRepo userRepo;
     @GetMapping("/")
     public String home(Model model){
-        Iterable<Topic> topic = topicRepo.findAll();
-        model.addAttribute("topic",topic);
         return "home";
     }
 }

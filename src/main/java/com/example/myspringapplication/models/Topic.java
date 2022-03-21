@@ -1,8 +1,6 @@
 package com.example.myspringapplication.models;
-import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 
 @Entity
