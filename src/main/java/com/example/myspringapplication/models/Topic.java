@@ -13,7 +13,7 @@ public class Topic {
     private String article;
     private int views;
     @OneToOne
-    private Users User;
+    private com.example.myspringapplication.models.User User;
 
     public Topic() {
 
@@ -27,11 +27,11 @@ public class Topic {
         this.article = article;
     }
 
-    public Users getUser() {
+    public com.example.myspringapplication.models.User getUser() {
         return User;
     }
 
-    public void setUser(Users user) {
+    public void setUser(com.example.myspringapplication.models.User user) {
         User = user;
     }
 
@@ -59,7 +59,7 @@ public class Topic {
         this.id = id;
     }
 
-    public Topic(String description, String article, Users user) {
+    public Topic(String description, String article, com.example.myspringapplication.models.User user) {
         this.id = 0L;
         this.description = description;
         this.article = article;
