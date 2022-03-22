@@ -17,8 +17,12 @@
                 <li><a href="/aboutus" class="nav-link px-2 text-white">About</a></li>
             </ul>
             <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
-                <input type="submit" value="Sign Out"/>
+                <input type="submit" class="btn btn-outline-light me-2" value="Sign Out"/>
             </form>
+            <div sec:authorize="isAnonymous()">
+                <a class="btn btn-outline-light me-2" href="/login">Sing in</a>
+                <a class="btn btn-warning" href="/registration">Sing up</a>
+            </div>
         </div>
     </div>
 </header>
