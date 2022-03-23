@@ -37,6 +37,7 @@ public class TopicController {
     public String showTopic(@RequestParam(name = "id") long id, Model model) {
         if(topicRepo.existsById(id)) {
             model.addAttribute("topic", topicRepo.findById(id).get());
+            topicRepo.findById(id).get().setViews(topicRepo.findById(id).get().getViews()+1);
         }
         else {
             return"/topic-add";

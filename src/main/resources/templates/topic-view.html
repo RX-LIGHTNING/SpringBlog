@@ -16,6 +16,7 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
+
 <p th:text="${'Article:'+topic.getArticle()}">
 <p th:text="${'Description:'+topic.getDescription()}">
 <p th:text="${'User Login:'+topic.getUser().getUsername()}">
