@@ -2,7 +2,7 @@ package com.example.myspringapplication.utils;
 
 public class Validator {
     public static boolean isMail(String mail){
-        return mail.matches("[a-zA-Z0-9_-]+\\\\@[a-zA-Z0-9_\\\\.-]+");
+        return mail.matches("[a-zA-Z0-9_-]+\\@[a-zA-Z0-9_\\\\.-]+");
     }
     public static boolean isPassword(String password){
         return password.matches("\\S{4,}");
