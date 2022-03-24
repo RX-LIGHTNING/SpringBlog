@@ -24,7 +24,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         <a type="submit" th:href="@{/topic-view(id=${el.getId()})}" class="btn btn-sm btn-outline-secondary">View</a>
-                                        <a type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a sec:authorize="hasAuthority('ADMIN')" type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
 
                                     </div>
                                     <small class="text-muted" th:text="${'Views:'+el.getViews()}"></small>

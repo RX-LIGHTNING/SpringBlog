@@ -3,7 +3,9 @@ package com.example.myspringapplication.controllers;
 import com.example.myspringapplication.models.Role;
 import com.example.myspringapplication.models.User;
 import com.example.myspringapplication.repo.UserRepo;
+import com.example.myspringapplication.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,8 @@ import java.util.Collections;
 public class AccountController {
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
     public String login(Model model, HttpServletRequest request) {
@@ -30,13 +34,26 @@ public class AccountController {
 
     @PostMapping("/registration")
     public String addUser(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password, @RequestParam(name = "mail") String mail) {
+        User userFromDB = userRepo.findUserByUsername(username);
+        if(userFromDB!=null){
+            return "registration";
+        }
+        else if(!Validator.isMail(mail)){
+            return "registration";
+        }
+        else if(!Validator.isPassword(password)){
+            return "registration";
+        }
+        else if(!Validator.isUsername(username))
+        {
+            return "registration";
+        }
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         user.setMail(mail);
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
-        // User userFromDB = userRepo.findUserByUsername(user.getUsername());
         userRepo.save(user);
         return "login";
     }
