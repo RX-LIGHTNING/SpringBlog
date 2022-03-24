@@ -14,12 +14,13 @@
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossOrigin="anonymous"></script>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <header th:insert="blocks/header :: header"></header>
 <div class="card shadow-sm align-items-center">
 <h1 class="" th:text="${topic.getArticle()}"></h1>
 <p th:text="${topic.getDescription()}">
 <p th:text="${'User Login:'+topic.getUser().getUsername()}">
 </div>
+<footer class="mt-auto" th:insert="blocks/footer :: footer"></footer>
 </body>
 </html>
