@@ -1,8 +1,10 @@
 package com.example.myspringapplication.controllers;
 
+import com.example.myspringapplication.models.Comment;
 import com.example.myspringapplication.models.Role;
 import com.example.myspringapplication.models.Topic;
 import com.example.myspringapplication.models.User;
+import com.example.myspringapplication.repo.CommentRepo;
 import com.example.myspringapplication.repo.TopicRepo;
 import com.example.myspringapplication.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class TopicController {
     private TopicRepo topicRepo;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private CommentRepo commentRepo;
 
     @GetMapping("/topic-list")
     public String showTopicList(Model model) {
@@ -51,6 +55,8 @@ public class TopicController {
         if (topicRepo.existsById(id)) {
             model.addAttribute("topic", topicRepo.findById(id).get());
             topicRepo.findById(id).get().setViews(topicRepo.findById(id).get().getViews() + 1);
+            Comment[] comments = commentRepo.findCommentsByTopic(topicRepo.findById(id).get());
+            model.addAttribute("comment", comments);
         } else {
             return "/topic-add";
         }
