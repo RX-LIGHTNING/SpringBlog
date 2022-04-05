@@ -1,5 +1,6 @@
 package com.example.myspringapplication.config;
 
+import com.example.myspringapplication.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/","/registration","/aboutus").permitAll()
+                .antMatchers("/admin-panel").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                     .formLogin()
