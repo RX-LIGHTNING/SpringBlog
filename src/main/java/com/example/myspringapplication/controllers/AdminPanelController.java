@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class AdminPanelController {
@@ -38,7 +37,12 @@ public class AdminPanelController {
     public String getAdminUserEditAccept( @RequestParam(value = "selected", required = false)Role[] selected,@RequestParam(name = "username") String Username, @RequestParam(name = "mail") String Mail, @RequestParam(name = "id") long id, Model model) {
         model.addAttribute("user", userRepo.findById(id).get());
         model.addAttribute("roles", Role.values());
-        System.out.println(Arrays.toString(selected));
+        User user = userRepo.findById(id).get();
+        Set<Role> targetSet = new HashSet<Role>();
+        Collections.addAll(targetSet, selected);
+        user.setRoles(targetSet);
+        user.setUsername(Username);
+        user.setMail(Mail);
         return "admin-panels/user-edit";
     }
     @GetMapping("/admin-panel/stats")

@@ -11,7 +11,7 @@
     <div th:each="el : ${roles}">
         <input th:text="${el}"  type="checkbox" name="selected" th:value="${el}"><br>
     </div>
-    <input type="text" name="id" th:value="${user.getId}"><br>
+    <input type="hidden" name="id" th:value="${user.getId}"><br>
     <input type="submit">
 </form>
 </body>
