@@ -10,12 +10,13 @@
 <body class="d-flex flex-column min-vh-100">
 <header th:insert="blocks/header :: header"></header>
 <div class="container">
+
 <form action="/admin-panel/users/edit/accept" method="post">
     <p>Login:</p><input type="text" name="username" th:value="${user.getUsername()}"><br>
     <p>Mail</p><input type="text" name="mail" th:value="${user.getMail()}"><br>
     <p>Roles</p>
     <div th:each="el : ${roles}">
-        <input th:text="${el}" th:checked="${user.getRoles().contains(el)}"  type="checkbox" name="selected" th:value="${el}"><br>
+        <br><input th:text="${el}" th:checked="${user.getRoles().contains(el)}"  type="checkbox" name="selected" th:value="${el}"><br><a th:text="${el.getDescription()}"/>
     </div>
     <input type="hidden" name="id" th:value="${user.getId}"><br>
     <input type="submit" class="btn btn-sm btn-outline-primary">

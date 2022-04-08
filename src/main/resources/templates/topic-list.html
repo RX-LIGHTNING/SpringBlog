@@ -30,10 +30,10 @@
                                 <a type="submit" th:href="@{/topic-view(id=${el.getId()})}"
                                    class="btn btn-sm btn-outline-primary">View</a>
 
-                                <a th:if="${#authentication.name.equals(el.getUser().getUsername())} or ${#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                <a th:if="${#authentication.name.equals(el.getUser().getUsername())} or ${#authorization.expression('hasAuthority(''CANEDITTOPIC'')')}"
                                    th:href="@{/topic-edit(id=${el.getId()})}" type="button"
                                    class="btn btn-sm btn-outline-secondary">Edit</a>
-                                <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                <a th:if="${#authorization.expression('hasAuthority(''CANDELETETOPIC'')')}"
                                    th:href="@{/topic-delete(id=${el.getId()})}" type="button"
                                    class="btn btn-sm btn-outline-danger">Delete</a>
 

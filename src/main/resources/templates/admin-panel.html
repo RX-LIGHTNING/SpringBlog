@@ -27,6 +27,7 @@
     </div>
 </div>
 <div class="container" style="margin-top: 10vh;" th:unless="${#lists.isEmpty(users)}">
+
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 gy-5">
         <div class="col" th:each="el : ${users}">
             <div class="card shadow-sm">
