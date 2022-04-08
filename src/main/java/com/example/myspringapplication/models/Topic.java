@@ -1,6 +1,7 @@
 package com.example.myspringapplication.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -13,8 +14,20 @@ public class Topic {
     private String article;
     private int views;
     @OneToOne
-    private com.example.myspringapplication.models.User User;
+    private User User;
+    @OneToMany(cascade=CascadeType.REMOVE)
+    private List<Comment> Comments;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public List<Comment> getComments() {
+        return Comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        Comments = comments;
+    }
     public Topic() {
 
     }

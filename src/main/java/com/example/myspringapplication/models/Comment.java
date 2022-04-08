@@ -1,5 +1,8 @@
 package com.example.myspringapplication.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 @Entity
 @Table(name = "Comment")
@@ -11,8 +14,6 @@ public class Comment {
     private String comment;
     @OneToOne
     private User user;
-    @OneToOne
-    private Topic topic;
 
     public Comment() {
 
@@ -37,17 +38,8 @@ public class Comment {
         this.user = user;
     }
 
-    public Topic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
-    }
-
-    public Comment(String comment, User user, Topic topic) {
+    public Comment(String comment, User user) {
         this.comment = comment;
         this.user = user;
-        this.topic = topic;
     }
 }

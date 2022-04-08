@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 @SpringBootApplication
-@Service
 public class MySpringApplication {
     public static void main(String[] args) {
         SpringApplication.run(MySpringApplication.class, args);

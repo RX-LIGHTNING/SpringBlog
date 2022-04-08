@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommentRepo extends CrudRepository<Comment, Long> {
-    Comment[] findCommentsByTopic(Topic topic);
 }

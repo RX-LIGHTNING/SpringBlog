@@ -28,6 +28,11 @@
         <h1 class="pb-5 mb-0 small" th:text="${el.getUser().getUsername()}"/>
         <br>
         <p class="pb-3 mb-0 small lh-sm border-bottom" th:text="${el.getComment()}"/>
+        <form action="/comment-delete" method="post" th:if="${#authorization.expression('hasAuthority(''CANDELETECOMMENTS'')')}">
+            <input type="hidden" name="id" th:value="${el.getId()}">
+            <input type="hidden" name="top_id" th:value="${topic.getId()}">
+            <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete Comment">
+        </form>
     </div>
 </div>
 <div class="album py-5 bg-light">

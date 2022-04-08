@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class CommentController {
@@ -22,11 +24,15 @@ public class CommentController {
     @Autowired
     TopicRepo topicRepo;
     @PostMapping("/comment-add")
-    public String commentAdd(Model model,@RequestParam(name = "text") String text,@RequestParam(name = "topic_id") long topId) {
+    public RedirectView commentAdd(Model model,@RequestParam(name = "text") String text,@RequestParam(name = "topic_id") long topId) {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
-        System.out.println(1);
-        commentRepo.save(new Comment(text,userRepo.findUserByUsername(username),topicRepo.findById(topId).get()));
-        return "topic-list";
+        topicRepo.findById(topId).get().getComments().add(commentRepo.save(new Comment(text,userRepo.findUserByUsername(username))));
+        return new RedirectView("/topic-view?id="+topId);
+    }
+    @PostMapping("/comment-delete")
+    public RedirectView commentDelete(@RequestParam(name = "id") long id, @RequestParam(name = "top_id") long top_id) {
+        topicRepo.findById(top_id).get().getComments().remove(commentRepo.findById(id).get());
+        return new RedirectView("/topic-view?id="+top_id);
     }
 }

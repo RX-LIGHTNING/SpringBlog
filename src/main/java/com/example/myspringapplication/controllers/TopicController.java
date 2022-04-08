@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -55,8 +56,7 @@ public class TopicController {
         if (topicRepo.existsById(id)) {
             model.addAttribute("topic", topicRepo.findById(id).get());
             topicRepo.findById(id).get().setViews(topicRepo.findById(id).get().getViews() + 1);
-            Comment[] comments = commentRepo.findCommentsByTopic(topicRepo.findById(id).get());
-            model.addAttribute("comment", comments);
+            model.addAttribute("comment", topicRepo.findById(id).get().getComments());
         } else {
             return "/topic-add";
         }
@@ -84,13 +84,13 @@ public class TopicController {
         return showTopic(id, model);
     }
     @GetMapping("/topic-delete")
-    public String topicDelete(Model model, @RequestParam(name = "id") long id) {
+    public RedirectView topicDelete(Model model, @RequestParam(name = "id") long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
         User user = userRepo.findUserByUsername(login);
         if (user.getRoles().contains(Role.ADMIN)) {
             topicRepo.deleteById(id);
         }
-        return showTopicList(model);
+        return new RedirectView("/topic-list");
     }
 }
