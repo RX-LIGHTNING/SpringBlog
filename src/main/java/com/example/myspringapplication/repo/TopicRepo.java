@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TopicRepo extends CrudRepository<Topic, Long>
 {
-    Topic findTopicByUser(User user);
 }

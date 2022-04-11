@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","/registration","/aboutus").permitAll()
                 .antMatchers("/admin-panel/*","/admin-panel").hasAuthority("ADMIN")
-                .anyRequest().authenticated()
+                .anyRequest().access("not( hasAuthority('BANNED') ) and isAuthenticated()")
                 .and()
                     .formLogin()
                     .loginPage("/login")

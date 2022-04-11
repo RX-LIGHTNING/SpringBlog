@@ -5,7 +5,8 @@ public enum Role {
     ADMIN("Role, that gives access to users list"),
     CANDELETECOMMENTS("Role, that gives permission to delete comment"),
     CANEDITTOPIC("Role, that gives permission to edit topics"),
-    CANDELETETOPIC("Role, that gives permission to delete topics");
+    CANDELETETOPIC("Role, that gives permission to delete topics"),
+    BANNED("Role, for banned users");
     String description;
 
     public String getDescription() {
