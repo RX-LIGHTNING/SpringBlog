@@ -7,6 +7,7 @@ import com.example.myspringapplication.models.User;
 import com.example.myspringapplication.repo.CommentRepo;
 import com.example.myspringapplication.repo.TopicRepo;
 import com.example.myspringapplication.repo.UserRepo;
+import com.example.myspringapplication.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,12 +39,17 @@ public class TopicController {
         return "topic-list";
     }
 
-    @GetMapping("/topic-add/accept")
-    public String addTopic(@RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
+    @PostMapping("/topic-add/accept")
+    public RedirectView addTopic(@RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
-        topicRepo.save(new Topic(description, article, userRepo.findUserByUsername(username)));
-        return "topic-add";
+        if (Validator.isCorrectTopicLength(description) && Validator.isCorrectTopicArticle(article)) {
+            long topicId = topicRepo.save(new Topic(description, article, userRepo.findUserByUsername(username))).getId();
+            return new RedirectView("/topic-view?id=" + topicId);
+        }
+        else {
+            return new RedirectView("/topic-add");
+        }
     }
 
     @GetMapping("/topic-add")

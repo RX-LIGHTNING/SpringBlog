@@ -22,6 +22,12 @@ public class AccountController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @GetMapping("/profile")
+    public String showProfile(Model model, HttpServletRequest request, @RequestParam(name = "username") String username) {
+        model.addAttribute("user",userRepo.findUserByUsername(username));
+        return "profile";
+    }
+
     @GetMapping("/login")
     public String login(Model model, HttpServletRequest request) {
         return "login";

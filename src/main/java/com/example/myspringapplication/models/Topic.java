@@ -1,6 +1,7 @@
 package com.example.myspringapplication.models;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -10,13 +11,16 @@ public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String article;
     private int views;
+    private Date publishDate;
     @OneToOne
     private User User;
-    @OneToMany(cascade=CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<Comment> Comments;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -25,9 +29,18 @@ public class Topic {
         return Comments;
     }
 
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
+    }
+
     public void setComments(List<Comment> comments) {
         Comments = comments;
     }
+
     public Topic() {
 
     }
@@ -78,5 +91,6 @@ public class Topic {
         this.article = article;
         this.views = 0;
         User = user;
+        this.publishDate = new Date();
     }
 }

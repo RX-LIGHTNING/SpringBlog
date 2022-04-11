@@ -17,23 +17,30 @@
 <body class="d-flex flex-column min-vh-100">
 <header th:insert="blocks/header :: header"></header>
 <div class="card shadow-sm align-items-center">
-<h1 class="" th:text="${topic.getArticle()}"></h1>
-<p th:text="${topic.getDescription()}">
-<p th:text="${'User Login:'+topic.getUser().getUsername()}">
+    <h1 class="" th:text="${topic.getArticle()}"></h1>
+    <p th:text="${topic.getDescription()}">
+    <p th:text="${'User Login:'+topic.getUser().getUsername()}">
+    <p th:text="${'Publish Date:'+topic.getPublishDate()}">
 </div>
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     <h6 class="border-bottom pb-2 mb-0">Comments</h6>
-    <div class="d-flex pt-3" th:each="el : ${comment}">
-        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#6f42c1"></rect><text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text></svg>
-        <h1 class="pb-5 mb-0 small" th:text="${el.getUser().getUsername()}"/>
-        <br>
-        <p class="pb-3 mb-0 small lh-sm border-bottom" th:text="${el.getComment()}"/>
-        <form action="/comment-delete" method="post" th:if="${#authorization.expression('hasAuthority(''CANDELETECOMMENTS'')')}">
+    <div class="" th:each="el : ${comment}">
+        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32"
+             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
+             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#6f42c1"></rect>
+            <text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text>
+        </svg>
+        <a class="mb-0 small" th:text="${el.getUser().getUsername()}" th:href="'/profile?username='+${el.getUser().getUsername()}"/>
+        <p class="mb-0 small lh-sm border-bottom" th:text="${el.getComment()}"/>
+        <form action="/comment-delete" method="post"
+              th:if="${#authorization.expression('hasAuthority(''CANDELETECOMMENTS'')')}">
             <input type="hidden" name="id" th:value="${el.getId()}">
             <input type="hidden" name="top_id" th:value="${topic.getId()}">
             <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete Comment">
         </form>
     </div>
+
 </div>
 <div class="album py-5 bg-light">
     <div class="container">
