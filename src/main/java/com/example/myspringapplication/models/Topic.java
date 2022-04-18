@@ -17,7 +17,7 @@ public class Topic {
     private int views;
     private Date publishDate;
     @OneToOne
-    private User User;
+    private User user;
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<Comment> Comments;
 
@@ -54,11 +54,11 @@ public class Topic {
     }
 
     public com.example.myspringapplication.models.User getUser() {
-        return User;
+        return user;
     }
 
     public void setUser(com.example.myspringapplication.models.User user) {
-        User = user;
+        user = user;
     }
 
     public String getDescription() {
@@ -90,7 +90,7 @@ public class Topic {
         this.description = description;
         this.article = article;
         this.views = 0;
-        User = user;
+        this.user = user;
         this.publishDate = new Date();
     }
 }

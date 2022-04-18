@@ -14,8 +14,9 @@ public class MainController {
     private TopicRepo topicRepo;
     @Autowired
     private UserRepo userRepo;
+
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model) {
         return "home";
     }
 }

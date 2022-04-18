@@ -14,18 +14,24 @@
                 <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
                 <li><a href="/topic-list" class="nav-link px-2 text-white">Topics</a></li>
                 <li><a href="/aboutus" class="nav-link px-2 text-white">About</a></li>
-                <li sec:authorize="hasAuthority('ADMIN')"><a href="/admin-panel" class="nav-link px-2 text-white">Admin panel</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')"><a href="/admin-panel" class="nav-link px-2 text-white">Admin
+                    panel</a></li>
             </ul>
             <div class="flex-shrink-0 dropdown" sec:authorize="isAuthenticated()">
-                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                </a>
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser"
+                   data-bs-toggle="dropdown" aria-expanded="false" th:text="${#authentication.getPrincipal().getUsername()}"></a>
                 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser" style="">
-                    <li><a class="dropdown-item" th:href ="'/profile?username='+${#authentication.getPrincipal().getUsername()}">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
-                        <input type="submit" class="dropdown-item" value="Sign Out"/>
-                    </form></li>
+                    <li><a class="dropdown-item"
+                           th:href="'/profile?username='+${#authentication.getPrincipal().getUsername()}">Profile</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                            <input type="submit" class="dropdown-item" value="Sign Out"/>
+                        </form>
+                    </li>
                 </ul>
             </div>
 

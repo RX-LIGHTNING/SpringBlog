@@ -2,6 +2,7 @@ package com.example.myspringapplication.controllers;
 
 import com.example.myspringapplication.models.Role;
 import com.example.myspringapplication.models.User;
+import com.example.myspringapplication.repo.TopicRepo;
 import com.example.myspringapplication.repo.UserRepo;
 import com.example.myspringapplication.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,14 @@ public class AccountController {
     @Autowired
     UserRepo userRepo;
     @Autowired
+    TopicRepo topicRepo;
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @GetMapping("/profile")
     public String showProfile(Model model, HttpServletRequest request, @RequestParam(name = "username") String username) {
         model.addAttribute("user",userRepo.findUserByUsername(username));
+        model.addAttribute("topic",topicRepo.findTopicsByUser(userRepo.findUserByUsername(username)));
         return "profile";
     }
 

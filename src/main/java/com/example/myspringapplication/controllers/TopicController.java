@@ -46,8 +46,7 @@ public class TopicController {
         if (Validator.isCorrectTopicLength(description) && Validator.isCorrectTopicArticle(article)) {
             long topicId = topicRepo.save(new Topic(description, article, userRepo.findUserByUsername(username))).getId();
             return new RedirectView("/topic-view?id=" + topicId);
-        }
-        else {
+        } else {
             return new RedirectView("/topic-add");
         }
     }
@@ -89,6 +88,7 @@ public class TopicController {
         topicRepo.findById(id).get().setDescription(description);
         return showTopic(id, model);
     }
+
     @GetMapping("/topic-delete")
     public RedirectView topicDelete(Model model, @RequestParam(name = "id") long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
