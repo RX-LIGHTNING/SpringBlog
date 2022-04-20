@@ -83,10 +83,10 @@ public class TopicController {
     }
 
     @GetMapping("/topic-edit/accept")
-    public String editTopic(@RequestParam(name = "id") long id, @RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
+    public RedirectView editTopic(@RequestParam(name = "id") long id, @RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
         topicRepo.findById(id).get().setArticle(article);
         topicRepo.findById(id).get().setDescription(description);
-        return showTopic(id, model);
+        return new RedirectView("/topic-list");
     }
 
     @GetMapping("/topic-delete")

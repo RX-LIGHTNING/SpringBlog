@@ -47,7 +47,7 @@
 </div>
 
 
-<div id="statdiv" th:unless="${#lists.isEmpty(TodayTopics) || #lists.isEmpty(TodayUsers)}">
+<div id="statdiv" th:unless="${#lists.isEmpty(TodayTopics)}">
     <div class="container">
         <h1 th:text="'Topics per day: '+${TodayTopics.size()}"></h1>
         <h1 th:text="'Users per day: '+${TodayUsers.size()}"></h1>
