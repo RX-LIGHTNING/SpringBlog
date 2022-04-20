@@ -1,6 +1,7 @@
 package com.example.myspringapplication.models;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -14,6 +15,7 @@ public class User {
     private String username;
     private String mail;
     private boolean active;
+    private Date regDate=new Date();
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -26,7 +28,6 @@ public class User {
     public void setActive(boolean active) {
         this.active = active;
     }
-
     public Set<Role> getRoles() {
         return roles;
     }
