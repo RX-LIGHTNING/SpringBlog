@@ -16,10 +16,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,7 +40,12 @@ public class TopicController {
         model.addAttribute("topic", topic);
         return "topic-list";
     }
-
+    @GetMapping("/topic-list/search")
+    public String showFilteredTopicList(@RequestParam(name = "search_query") String search,Model model) {
+        List<Topic> topic = topicRepo.findAllByArticleContainsIgnoreCase(search);
+        model.addAttribute("topic", topic);
+        return "topic-list";
+    }
     @PostMapping("/topic-add/accept")
     public RedirectView addTopic(@RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();

@@ -13,4 +13,5 @@ public interface TopicRepo extends CrudRepository<Topic, Long>
 {
     List<Topic> findTopicsByUser(User user);
     List<Topic> findAllByPublishDateBetween(Date to, Date from);
+    List<Topic> findAllByArticleContainsIgnoreCase(String article);
 }

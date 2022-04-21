@@ -17,10 +17,23 @@
 <body class="d-flex flex-column min-vh-100 ">
 <header th:insert="blocks/header :: header"></header>
 
-<div class="album py-5 bg-light bg-transparent">
+<div class="album py-5 bg-light bg-transparent" >
     <div class="container ">
-        <a href="/topic-add" class="btn btn-sm btn-warning">Add Topic</a>
-        <div class="col col-rows-1 col-rows-sm-2 col-rows-md-3 gy-5">
+
+
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><form action="/topic-list/search" method="get">
+                        <input type="text" name="search_query" id="">
+                        <input type="submit" value="Search">
+                    </form></li>
+                    <li><a href="/topic-add" class="btn btn-sm btn-warning">Add Topic</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col col-rows-1 col-rows-sm-2 col-rows-md-3 gy-5" th:unless="${#lists.isEmpty(topic)}">
             <div class="row" th:each="el : ${topic}">
                 <div class="card shadow-sm">
                     <div class="card-body">
