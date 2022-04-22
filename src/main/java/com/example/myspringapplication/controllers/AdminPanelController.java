@@ -28,11 +28,13 @@ public class AdminPanelController {
     TopicRepo topicRepo;
     @GetMapping("/admin-panel")
     public String getAdminPage(Model model) {
+        model.addAttribute("mode","null");
         return "admin-panel";
     }
     @GetMapping("/admin-panel/users")
     public String getAdminUserPage(Model model) {
         Iterable<User> users = userRepo.findAll();
+        model.addAttribute("mode","users");
         model.addAttribute("users", users);
         return "admin-panel";
     }
@@ -59,8 +61,10 @@ public class AdminPanelController {
         Instant now = Instant.now();
         Instant before = now.minus(Duration.ofDays(1));
         Date dateBefore = Date.from(before);
+        model.addAttribute("mode","stats");
         model.addAttribute("TodayTopics",topicRepo.findAllByPublishDateBetween(dateBefore, new Date()));
         model.addAttribute("TodayUsers",userRepo.findAllByRegDateBetween(dateBefore, new Date()));
         return "admin-panel";
     }
+
 }

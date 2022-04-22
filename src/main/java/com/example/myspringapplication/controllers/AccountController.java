@@ -45,25 +45,25 @@ public class AccountController {
     @PostMapping("/registration")
     public String addUser(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password, @RequestParam(name = "mail") String mail) {
         User userFromDB = userRepo.findUserByUsername(username);
-//        if(userFromDB!=null){
-//            return "registration";
-//        }
-//        else if(!Validator.isMail(mail)){
-//            return "registration";
-//        }
-//        else if(!Validator.isPassword(password)){
-//            return "registration";
-//        }
-//        else if(!Validator.isUsername(username))
-//        {
-//            return "registration";
-//        }
+        if(userFromDB!=null){
+            return "registration";
+        }
+        else if(!Validator.isMail(mail)){
+            return "registration";
+        }
+        else if(!Validator.isPassword(password)){
+            return "registration";
+        }
+        else if(!Validator.isUsername(username))
+        {
+            return "registration";
+        }
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setMail(mail);
         user.setActive(true);
-        user.setRoles(Collections.singleton(Role.ADMIN));
+        user.setRoles(Collections.singleton(Role.USER));
         userRepo.save(user);
         return "login";
     }

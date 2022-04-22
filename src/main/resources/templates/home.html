@@ -10,6 +10,12 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <header th:insert="blocks/header :: header"></header>
+<div class="d-flex flex-column min-vh-100 align-items-center">
+    <h1>Welcome to the main page</h1>
+    <a class="btn btn-warning" href="/registration">Sing up</a>
+    <h4>Or</h4>
+    <a class="btn btn-warning me-2" href="/login">Sing in</a>
+</div>
 <footer class="mt-auto" th:insert="blocks/footer :: footer"></footer>
 </body>
 </html>
