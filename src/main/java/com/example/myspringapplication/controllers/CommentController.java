@@ -25,9 +25,11 @@ public class CommentController {
     TopicRepo topicRepo;
     @PostMapping("/comment-add")
     public RedirectView commentAdd(Model model,@RequestParam(name = "text") String text,@RequestParam(name = "topic_id") long topId) {
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        String username = loggedInUser.getName();
-        topicRepo.findById(topId).get().getComments().add(commentRepo.save(new Comment(text,userRepo.findUserByUsername(username))));
+        if(text.length()>0) {
+            Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+            String username = loggedInUser.getName();
+            topicRepo.findById(topId).get().getComments().add(commentRepo.save(new Comment(text, userRepo.findUserByUsername(username))));
+        }
         return new RedirectView("/topic-view?id="+topId);
     }
     @PostMapping("/comment-delete")

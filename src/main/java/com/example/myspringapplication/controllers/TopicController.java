@@ -49,18 +49,17 @@ public class TopicController {
         return "topic-list";
     }
     @PostMapping("/topic-add/accept")
-    public RedirectView addTopic(@RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
+    public String addTopic(@RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
         if (Validator.isCorrectTopicLength(description) && Validator.isCorrectTopicArticle(article)) {
             long topicId = topicRepo.save(new Topic(description, article, userRepo.findUserByUsername(username))).getId();
-            return new RedirectView("/topic-view?id=" + topicId);
-        } else{
-            RedirectView redirectView = new RedirectView("/topic-add");
-            redirectView.addStaticAttribute("error","Topic wasn't added, check topic text and article length");
-            return redirectView;
+            return "redirect:/topic-view?id="+topicId;
         }
-
+        else {
+            model.addAttribute("error","Incorrect data");
+        }
+        return showAddTopic(model);
     }
 
     @GetMapping("/topic-add")
