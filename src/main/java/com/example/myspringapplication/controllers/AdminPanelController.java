@@ -1,8 +1,10 @@
 package com.example.myspringapplication.controllers;
 
+import com.example.myspringapplication.models.Comment;
 import com.example.myspringapplication.models.Role;
 import com.example.myspringapplication.models.Topic;
 import com.example.myspringapplication.models.User;
+import com.example.myspringapplication.repo.CommentRepo;
 import com.example.myspringapplication.repo.TopicRepo;
 import com.example.myspringapplication.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class AdminPanelController {
     UserRepo userRepo;
     @Autowired
     TopicRepo topicRepo;
+    @Autowired
+    CommentRepo commentRepo;
     @GetMapping("/admin-panel")
     public String getAdminPage(Model model) {
         model.addAttribute("mode","null");
@@ -49,6 +53,15 @@ public class AdminPanelController {
             model.addAttribute("roles", Role.values());
         }
         return "admin-panels/user-edit";
+    }
+    @GetMapping("/admin-panel/users/delete")
+    public String deleteUser(@RequestParam(name = "id") long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findUserByUsername(authentication.getName());
+        if(user.getRoles().contains(Role.CANDELETEUSERS)) {
+            userRepo.delete(userRepo.findById(id).get());
+        }
+        return "redirect:/admin-panel/users";
     }
     @PostMapping("/admin-panel/users/edit/accept")
     public String getAdminUserEditAccept( @RequestParam(value = "selected", required = false)Role[] selected,@RequestParam(name = "username") String Username, @RequestParam(name = "mail") String Mail, @RequestParam(name = "id") long id, Model model) {

@@ -15,10 +15,19 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <header th:insert="blocks/header :: header"></header>
-<div class="container">
-    <div th:if="${user.getFilename()!=null}">
-        <img th:src="${'/images/'+user.getFilename()}" alt="" style="width: 200px; height: 200px;">
+<div th:if="${user.getFilename()!=null}" class="container">
+    <img th:src="${'/images/'+user.getFilename()}" alt="" style="width: 200px; height: 200px;">
+    <div th:if="${#authentication.name.equals(user.getUsername())} or ${#authorization.expression('hasAuthority(''CANEDITAVATARS'')')}">
+        <form th:action="@{/profile/edit/avatar}" method="post" class="container md-12" enctype="multipart/form-data">
+                <input class="btn btn-primary" type="file" name="file">
+                <input type="hidden" name="username" th:value="${user.getUsername()}">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+
     </div>
+</div>
+<div class="container">
+    <br>
 <h1 th:text="'Username: '+${user.getUsername()}"></h1>
 <h1 th:text="'Mail: '+${user.getMail()}"></h1>
     <br>

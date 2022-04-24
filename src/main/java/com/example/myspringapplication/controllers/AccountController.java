@@ -8,6 +8,8 @@ import com.example.myspringapplication.utils.Validator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.UUID;
 
 @Controller
@@ -75,7 +78,7 @@ public class AccountController {
         user.setPassword(passwordEncoder.encode(password));
         user.setMail(mail);
         user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
+        user.setRoles(Collections.singleton(Role.ADMIN));
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
@@ -96,5 +99,30 @@ public class AccountController {
         }
         userRepo.save(user);
         return "login";
+    }
+    @PostMapping("/profile/edit/avatar")
+    public String addUser(@RequestParam("file") MultipartFile file, @RequestParam(name = "username") String username, Model model) throws IOException {
+        User user = userRepo.findUserByUsername(username);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(Objects.equals(user.getUsername(), authentication.getName()) ||userRepo.findUserByUsername(authentication.getName()).getRoles().contains(Role.CANEDITAVATARS)) {
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                File uploadDir = new File(uploadPath);
+
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+                user.setFilename(resultFilename);
+            } else {
+                String resultFilename = "default.jpg";
+                user.setFilename(resultFilename);
+            }
+        }
+        return "redirect:/profile?username="+user.getUsername();
     }
 }

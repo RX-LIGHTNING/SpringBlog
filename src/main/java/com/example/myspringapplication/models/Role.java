@@ -6,6 +6,8 @@ public enum Role {
     CANDELETECOMMENTS("Role, that gives permission to delete comment"),
     CANEDITTOPIC("Role, that gives permission to edit topics"),
     CANDELETETOPIC("Role, that gives permission to delete topics"),
+    CANEDITAVATARS("Role, for changing user's avatars"),
+    CANDELETEUSERS("Role, for deleting users"),
     BANNED("Role, for banned users");
     String description;
 
