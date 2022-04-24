@@ -43,19 +43,23 @@ public class AccountController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password, @RequestParam(name = "mail") String mail) {
+    public String addUser(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password, @RequestParam(name = "mail") String mail, Model model) {
         User userFromDB = userRepo.findUserByUsername(username);
         if(userFromDB!=null){
+            model.addAttribute("error","User with that login already exists");
             return "registration";
         }
         else if(!Validator.isMail(mail)){
+            model.addAttribute("error","Incorrect Email");
             return "registration";
         }
         else if(!Validator.isPassword(password)){
+            model.addAttribute("error","Incorrect password");
             return "registration";
         }
         else if(!Validator.isUsername(username))
         {
+            model.addAttribute("error","Incorrect username");
             return "registration";
         }
         User user = new User();

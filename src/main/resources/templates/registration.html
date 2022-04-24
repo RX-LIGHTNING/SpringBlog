@@ -9,6 +9,9 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <header th:insert="blocks/header :: header"></header>
+<div th:if="${error!=null}" class="container p-3 mb-2 bg-danger text-white">
+    <a th:text="${error}"/>
+</div>
 <form th:action="@{/registration}" method="post" class="container md-12">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     <div class="form-floating">

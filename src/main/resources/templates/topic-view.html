@@ -19,9 +19,9 @@
 <div class="card shadow-sm align-items-center">
     <h1 class="" th:text="${topic.getArticle()}"></h1>
     <p th:text="${topic.getDescription()}"/>
-        <a th:text="${topic.getUser().getUsername()}"
+        <a th:text="${'Publisher:'+topic.getUser().getUsername()}"
            th:href="'profile?username='+${topic.getUser().getUsername()}"/>
-    <p th:text="${'Publish Date:'+topic.getPublishDate()}"/>
+    <p th:text="${'Publish Date: '+topicpubdate}"/>
 </div>
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     <h6 class="border-bottom pb-2 mb-0">Comments</h6>

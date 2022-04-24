@@ -9,12 +9,15 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <header th:insert="blocks/header :: header"></header>
+<div th:if="${error!=null}" class="container p-3 mb-2 bg-danger text-white">
+    <a th:text="${error}"/>
+</div>
         <div class="album py-5 bg-light">
             <div class="container">
                 <form action="/topic-add/accept" method="post">
-                    <h3>Заголовок</h3><br>
+                    <h3>Article</h3>
                     <input type="text" name="article" value="">
-                    <h3>Текст</h3><br>
+                    <h3>Text</h3>
                     <textarea type="text" name="description" value=""></textarea>
                     <br>
                     <input type="submit" value="Submit">

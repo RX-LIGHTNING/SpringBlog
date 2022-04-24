@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -53,14 +55,17 @@ public class TopicController {
         if (Validator.isCorrectTopicLength(description) && Validator.isCorrectTopicArticle(article)) {
             long topicId = topicRepo.save(new Topic(description, article, userRepo.findUserByUsername(username))).getId();
             return new RedirectView("/topic-view?id=" + topicId);
-        } else {
-            return new RedirectView("/topic-add");
+        } else{
+            RedirectView redirectView = new RedirectView("/topic-add");
+            redirectView.addStaticAttribute("error","Topic wasn't added, check topic text and article length");
+            return redirectView;
         }
+
     }
 
     @GetMapping("/topic-add")
     public String showAddTopic(Model model) {
-        return "topic-add";
+        return "topic-add"; //redirect:/
     }
 
     @GetMapping("/topic-view")
@@ -69,6 +74,7 @@ public class TopicController {
             model.addAttribute("topic", topicRepo.findById(id).get());
             topicRepo.findById(id).get().setViews(topicRepo.findById(id).get().getViews() + 1);
             model.addAttribute("comment", topicRepo.findById(id).get().getComments());
+            model.addAttribute("topicpubdate",new SimpleDateFormat("yyyy.MM.dd").format(topicRepo.findById(id).get().getPublishDate()));
         } else {
             return "/topic-add";
         }
