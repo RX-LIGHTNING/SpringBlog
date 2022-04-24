@@ -12,7 +12,7 @@
 <div th:if="${error!=null}" class="container p-3 mb-2 bg-danger text-white">
     <a th:text="${error}"/>
 </div>
-<form th:action="@{/registration}" method="post" class="container md-12">
+<form th:action="@{/registration}" method="post" class="container md-12" enctype="multipart/form-data">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     <div class="form-floating">
         <input type="text" class="form-control" name="username" id="floatingInput" placeholder="login">
@@ -25,6 +25,10 @@
     <div class="form-floating">
         <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
         <label for="floatingPassword">Password</label>
+    </div>
+    <div class="form-floating">
+        <input type="file" name="file">
+        <label for="floatingInput">Profile Picture</label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
 </form>

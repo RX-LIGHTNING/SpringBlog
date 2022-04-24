@@ -10,6 +10,6 @@ public class Validator {
     public static boolean isUsername(String Username){
         return Username.matches("\\S{4,}");
     }
-    public static boolean isCorrectTopicLength(String Text){return Text.length() < 1024&& Text.length()>10;}
-    public static boolean isCorrectTopicArticle(String Text){return Text.length() < 35 && Text.length()>4;}
+    public static boolean isCorrectTopicLength(String Text){return Text.length() < 1024&& Text.length()>1;}
+    public static boolean isCorrectTopicArticle(String Text){return Text.length() < 35 && Text.length()>1;}
 }

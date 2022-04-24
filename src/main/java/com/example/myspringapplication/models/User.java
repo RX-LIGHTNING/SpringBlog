@@ -15,7 +15,8 @@ public class User {
     private String username;
     private String mail;
     private boolean active;
-    private Date regDate=new Date();
+    private Date regDate = new Date();
+    private String filename;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -28,6 +29,7 @@ public class User {
     public void setActive(boolean active) {
         this.active = active;
     }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -66,5 +68,13 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

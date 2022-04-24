@@ -6,6 +6,8 @@ import com.example.myspringapplication.models.User;
 import com.example.myspringapplication.repo.TopicRepo;
 import com.example.myspringapplication.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +42,12 @@ public class AdminPanelController {
     }
     @GetMapping("/admin-panel/users/edit")
     public String getAdminUserEditPage(@RequestParam(name = "id") long id, Model model) {
-        model.addAttribute("user", userRepo.findById(id).get());
-        model.addAttribute("roles", Role.values());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findUserByUsername(authentication.getName());
+        if(user.getRoles().contains(Role.ADMIN)) {
+            model.addAttribute("user", userRepo.findById(id).get());
+            model.addAttribute("roles", Role.values());
+        }
         return "admin-panels/user-edit";
     }
     @PostMapping("/admin-panel/users/edit/accept")

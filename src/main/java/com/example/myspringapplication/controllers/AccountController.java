@@ -5,6 +5,8 @@ import com.example.myspringapplication.models.User;
 import com.example.myspringapplication.repo.TopicRepo;
 import com.example.myspringapplication.repo.UserRepo;
 import com.example.myspringapplication.utils.Validator;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,9 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 
 @Controller
 public class AccountController {
@@ -24,6 +30,8 @@ public class AccountController {
     TopicRepo topicRepo;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @GetMapping("/profile")
     public String showProfile(Model model, HttpServletRequest request, @RequestParam(name = "username") String username) {
@@ -43,7 +51,7 @@ public class AccountController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password, @RequestParam(name = "mail") String mail, Model model) {
+    public String addUser(@RequestParam("file") MultipartFile file, @RequestParam(name = "username") String username, @RequestParam(name = "password") String password, @RequestParam(name = "mail") String mail, Model model) throws IOException {
         User userFromDB = userRepo.findUserByUsername(username);
         if(userFromDB!=null){
             model.addAttribute("error","User with that login already exists");
@@ -68,6 +76,24 @@ public class AccountController {
         user.setMail(mail);
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            user.setFilename(resultFilename);
+        }
+        else {
+            String resultFilename = "default.jpg";
+            user.setFilename(resultFilename);
+        }
         userRepo.save(user);
         return "login";
     }
