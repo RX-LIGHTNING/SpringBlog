@@ -19,7 +19,7 @@
     <img th:src="${'/images/'+user.getFilename()}" alt="" style="width: 200px; height: 200px;">
     <div th:if="${#authentication.name.equals(user.getUsername())} or ${#authorization.expression('hasAuthority(''CANEDITAVATARS'')')}">
         <form th:action="@{/profile/edit/avatar}" method="post" class="container md-12" enctype="multipart/form-data">
-                <input class="btn btn-primary" type="file" name="file">
+                <input class="btn btn-primary" type="file" name="file" accept="image/*">
                 <input type="hidden" name="username" th:value="${user.getUsername()}">
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>

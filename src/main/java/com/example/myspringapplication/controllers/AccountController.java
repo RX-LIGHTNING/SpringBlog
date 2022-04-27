@@ -78,7 +78,7 @@ public class AccountController {
         user.setPassword(passwordEncoder.encode(password));
         user.setMail(mail);
         user.setActive(true);
-        user.setRoles(Collections.singleton(Role.ADMIN));
+        user.setRoles(Collections.singleton(Role.USER));
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
