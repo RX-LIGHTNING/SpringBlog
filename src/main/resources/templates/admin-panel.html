@@ -36,7 +36,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                             <a class="btn btn-sm btn-outline-primary" th:href="'/admin-panel/users/edit?id='+${el.getId()}">Edit</a>
-                            <a class="btn btn-sm btn-outline-danger" th:href="'/admin-panel/users/delete?id='+${el.getId()}">Delete</a>
+                            <a th:if="${#authorization.expression('hasAuthority(''CANDELETEUSERS'')')}" class="btn btn-sm btn-outline-danger" th:href="'/admin-panel/users/delete?id='+${el.getId()}">Delete</a>
 <!--                            Тут кнопочки короче-->
                         </div>
                     </div>

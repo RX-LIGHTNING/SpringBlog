@@ -72,7 +72,7 @@ public class TopicController {
         if (topicRepo.existsById(id)) {
             model.addAttribute("topic", topicRepo.findById(id).get());
             topicRepo.findById(id).get().setViews(topicRepo.findById(id).get().getViews() + 1);
-            model.addAttribute("comment", topicRepo.findById(id).get().getComments());
+            model.addAttribute("comment",commentRepo.findAllByTopic(topicRepo.findById(id).get()));
             model.addAttribute("topicpubdate",new SimpleDateFormat("yyyy.MM.dd").format(topicRepo.findById(id).get().getPublishDate()));
         } else {
             return "/topic-add";

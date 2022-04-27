@@ -1,5 +1,8 @@
 package com.example.myspringapplication.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -18,15 +21,12 @@ public class Topic {
     private Date publishDate;
     @OneToOne
     private User user;
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private List<Comment> Comments;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "topic_id")
+    private List<Comment> comments;
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<Comment> getComments() {
-        return Comments;
     }
 
     public Date getPublishDate() {
@@ -35,10 +35,6 @@ public class Topic {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
-    }
-
-    public void setComments(List<Comment> comments) {
-        Comments = comments;
     }
 
     public Topic() {

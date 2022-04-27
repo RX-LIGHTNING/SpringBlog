@@ -9,7 +9,7 @@ public enum Role {
     CANEDITAVATARS("Role, for changing user's avatars"),
     CANDELETEUSERS("Role, for deleting users"),
     BANNED("Role, for banned users");
-    String description;
+    final String description;
 
     public String getDescription() {
         return description;

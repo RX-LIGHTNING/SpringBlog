@@ -14,7 +14,8 @@ public class Comment {
     private String comment;
     @OneToOne
     private User user;
-
+    @OneToOne
+    private Topic topic;
     public Comment() {
 
     }
@@ -42,8 +43,9 @@ public class Comment {
         this.user = user;
     }
 
-    public Comment(String comment, User user) {
+    public Comment(String comment, User user, Topic topic) {
         this.comment = comment;
         this.user = user;
+        this.topic = topic;
     }
 }
