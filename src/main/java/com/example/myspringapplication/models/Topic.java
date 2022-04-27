@@ -4,6 +4,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,34 @@ public class Topic {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "topic_id")
     private List<Comment> comments;
+    private String filename;
+    @ElementCollection
+    private List<String> tags = new ArrayList<>();
+
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -35,10 +64,6 @@ public class Topic {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
-    }
-
-    public Topic() {
-
     }
 
     public String getArticle() {
@@ -81,12 +106,18 @@ public class Topic {
         this.id = id;
     }
 
-    public Topic(String description, String article, com.example.myspringapplication.models.User user) {
+    public Topic() {
+
+    }
+
+    public Topic(String description, String article, com.example.myspringapplication.models.User user, List<String> tags, String filename) {
         this.id = 0L;
         this.description = description;
         this.article = article;
         this.views = 0;
         this.user = user;
         this.publishDate = new Date();
+        this.tags = tags;
+        this.filename = filename;
     }
 }

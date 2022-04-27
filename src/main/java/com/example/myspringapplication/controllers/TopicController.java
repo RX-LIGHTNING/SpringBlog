@@ -9,6 +9,7 @@ import com.example.myspringapplication.repo.TopicRepo;
 import com.example.myspringapplication.repo.UserRepo;
 import com.example.myspringapplication.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,13 +20,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class TopicController {
@@ -35,29 +37,46 @@ public class TopicController {
     private UserRepo userRepo;
     @Autowired
     private CommentRepo commentRepo;
-
+    @Value("${upload.path}")
+    private String uploadPath;
     @GetMapping("/topic-list")
     public String showTopicList(Model model) {
         Iterable<Topic> topic = topicRepo.findAll();
         model.addAttribute("topic", topic);
         return "topic-list";
     }
+
     @GetMapping("/topic-list/search")
-    public String showFilteredTopicList(@RequestParam(name = "search_query") String search,Model model) {
+    public String showFilteredTopicList(@RequestParam(name = "search_query") String search, Model model) {
         List<Topic> topic = topicRepo.findAllByArticleContainsIgnoreCase(search);
         model.addAttribute("topic", topic);
         return "topic-list";
     }
+
     @PostMapping("/topic-add/accept")
-    public String addTopic(@RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
+    public String addTopic(@RequestParam("file") MultipartFile file, @RequestParam(name = "description") String description, @RequestParam(name = "article") String article, @RequestParam(name = "tags") String tags, Model model) throws IOException {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
-        if (Validator.isCorrectTopicLength(description) && Validator.isCorrectTopicArticle(article)) {
-            long topicId = topicRepo.save(new Topic(description, article, userRepo.findUserByUsername(username))).getId();
-            return "redirect:/topic-view?id="+topicId;
+        String filename = "";
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            filename = resultFilename;
         }
-        else {
-            model.addAttribute("error","Incorrect data");
+        if (Validator.isCorrectTopicLength(description) && Validator.isCorrectTopicArticle(article)) {
+            long topicId = topicRepo.save(new Topic(description, article, userRepo.findUserByUsername(username), List.of(tags.split(" ")), filename)).getId();
+            return "redirect:/topic-view?id=" + topicId;
+        } else {
+            model.addAttribute("error", "Incorrect data");
         }
         return showAddTopic(model);
     }
@@ -70,10 +89,11 @@ public class TopicController {
     @GetMapping("/topic-view")
     public String showTopic(@RequestParam(name = "id") long id, Model model) {
         if (topicRepo.existsById(id)) {
+            System.out.println(topicRepo.findById(id).get().getTags());
             model.addAttribute("topic", topicRepo.findById(id).get());
             topicRepo.findById(id).get().setViews(topicRepo.findById(id).get().getViews() + 1);
-            model.addAttribute("comment",commentRepo.findAllByTopic(topicRepo.findById(id).get()));
-            model.addAttribute("topicpubdate",new SimpleDateFormat("yyyy.MM.dd").format(topicRepo.findById(id).get().getPublishDate()));
+            model.addAttribute("comment", commentRepo.findAllByTopic(topicRepo.findById(id).get()));
+            model.addAttribute("topicpubdate", new SimpleDateFormat("yyyy.MM.dd").format(topicRepo.findById(id).get().getPublishDate()));
         } else {
             return "/topic-add";
         }
@@ -95,7 +115,24 @@ public class TopicController {
     }
 
     @GetMapping("/topic-edit/accept")
-    public RedirectView editTopic(@RequestParam(name = "id") long id, @RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) {
+    public RedirectView editTopic(@RequestParam("file") MultipartFile file, @RequestParam(name = "tags") String tags,@RequestParam(name = "id") long id, @RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) throws IOException {
+        String filename = "";
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            filename = resultFilename;
+        }
+        topicRepo.findById(id).get().setTags(List.of(tags.split(" ")));
+        topicRepo.findById(id).get().setFilename(filename);
         topicRepo.findById(id).get().setArticle(article);
         topicRepo.findById(id).get().setDescription(description);
         return new RedirectView("/topic-list");

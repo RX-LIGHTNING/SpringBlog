@@ -14,11 +14,15 @@
 </div>
         <div class="album py-5 bg-light">
             <div class="container">
-                <form action="/topic-add/accept" method="post">
+                <form action="/topic-add/accept" method="post" enctype="multipart/form-data">
                     <h3>Article</h3>
                     <input type="text" name="article" value="">
+                    <h3>Tags</h3>
+                    <input type="text" name="tags" value="">
                     <h3>Text</h3>
                     <textarea type="text" name="description" value=""></textarea>
+                    <h3>Article Thumbnail</h3>
+                    <input type="file" name="file" value=""></input>
                     <br>
                     <input type="submit" value="Submit">
                 </form>

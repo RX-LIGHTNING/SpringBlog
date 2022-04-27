@@ -11,11 +11,16 @@
 <header th:insert="blocks/header :: header"></header>
 <div class="album py-5 bg-light">
     <div class="container">
-        <form action="/topic-edit/accept" method="get">
-            <h3>Заголовок</h3><br>
+        <form action="/topic-edit/accept" method="get" enctype="multipart/form-data">
+            <h3>Article</h3><br>
             <input type="text" name="article" th:value="${topic.getArticle()}">
-            <h3>Текст</h3><br>
+            <h3>Text</h3><br>
             <textarea type="text" name="description" th:text="${topic.getDescription()}"></textarea>
+            <h3>Tags</h3><br>
+            <input type="text" name="tags" th:value="${topic.getTags()}">
+            <br>
+            <h3>Article Thumbnail</h3>
+            <input type="file" name="file" value=""></input>
             <br>
             <input type="hidden" name="id" th:value="${topic.getId()}">
             <br>
