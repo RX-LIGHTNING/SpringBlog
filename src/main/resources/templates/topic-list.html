@@ -34,26 +34,25 @@
         <div th:if="${topic.size()==0}" class="align-items-center">
             <h2>Ooops, looks like there are no topics...</h2>
         </div>
-        <div class="col col-rows-1 col-rows-sm-2 col-rows-md-3 gy-5" th:unless="${#lists.isEmpty(topic)}">
-            <div class="row" th:each="el : ${topic}">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <p th:text="${el.getArticle()}" class="card-text"/>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a type="submit" th:href="@{/topic-view(id=${el.getId()})}"
-                                   class="btn btn-sm btn-outline-primary">View</a>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" th:unless="${#lists.isEmpty(topic)}">
+            <div class="card shadow-sm col" th:each="el : ${topic}">
+                <img  class="bd-placeholder-img card-img-top" width="100%" height="225" th:src="${'/images/'+el.getFilename()}" alt="Placeholder (╯°□°)╯︵ ┻━┻" style="width: 200px; height: 200px;">
+                <div class="card-body">
+                    <p th:text="${el.getArticle()}" class="card-text"/>
+                    <p class="card-text" th:text="${el.getDescription()}"></p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a type="submit" th:href="@{/topic-view(id=${el.getId()})}"
+                               class="btn btn-sm btn-outline-primary">View</a>
 
-                                <a th:if="${#authentication.name.equals(el.getUser().getUsername())} or ${#authorization.expression('hasAuthority(''CANEDITTOPIC'')')}"
-                                   th:href="@{/topic-edit(id=${el.getId()})}" type="button"
-                                   class="btn btn-sm btn-outline-secondary">Edit</a>
-                                <a th:if="${#authorization.expression('hasAuthority(''CANDELETETOPIC'')')}"
-                                   th:href="@{/topic-delete(id=${el.getId()})}" type="button"
-                                   class="btn btn-sm btn-outline-danger">Delete</a>
-
-                            </div>
-                            <small class="text-muted" th:text="${'Views:'+el.getViews()}"></small>
+                            <a th:if="${#authentication.name.equals(el.getUser().getUsername())} or ${#authorization.expression('hasAuthority(''CANEDITTOPIC'')')}"
+                               th:href="@{/topic-edit(id=${el.getId()})}" type="button"
+                               class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <a th:if="${#authorization.expression('hasAuthority(''CANDELETETOPIC'')')}"
+                               th:href="@{/topic-delete(id=${el.getId()})}" type="button"
+                               class="btn btn-sm btn-outline-danger">Delete</a>
                         </div>
+                        <small class="text-muted" th:text="${'Views:'+el.getViews()}"></small>
                     </div>
                 </div>
             </div>

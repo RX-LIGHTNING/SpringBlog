@@ -114,9 +114,8 @@ public class TopicController {
         }
     }
 
-    @GetMapping("/topic-edit/accept")
+    @PostMapping("/topic-edit/accept")
     public RedirectView editTopic(@RequestParam("file") MultipartFile file, @RequestParam(name = "tags") String tags,@RequestParam(name = "id") long id, @RequestParam(name = "description") String description, @RequestParam(name = "article") String article, Model model) throws IOException {
-        String filename = "";
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
@@ -129,10 +128,9 @@ public class TopicController {
 
             file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-            filename = resultFilename;
+            topicRepo.findById(id).get().setFilename(resultFilename);
         }
         topicRepo.findById(id).get().setTags(List.of(tags.split(" ")));
-        topicRepo.findById(id).get().setFilename(filename);
         topicRepo.findById(id).get().setArticle(article);
         topicRepo.findById(id).get().setDescription(description);
         return new RedirectView("/topic-list");

@@ -34,6 +34,10 @@ public class Topic {
         return tags;
     }
 
+    public String getTagsAsString() {
+        return String.join(" ", tags);
+    }
+
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
