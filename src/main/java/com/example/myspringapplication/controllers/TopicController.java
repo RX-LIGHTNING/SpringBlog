@@ -50,7 +50,9 @@ public class TopicController {
     public String showFilteredTopicList(@RequestParam(name = "search_query") String search, Model model) {
         HashSet<Topic> topic = new HashSet<>();
         topic.addAll(topicRepo.findAllByArticleContainsIgnoreCase(search));
-        topic.addAll(topicRepo.retrieveByTag(search));
+        for (String searchword:search.split(" ")) {
+            topic.addAll(topicRepo.retrieveByTag(searchword));
+        }
         model.addAttribute("topic", topic);
         return "topic-list";
     }
